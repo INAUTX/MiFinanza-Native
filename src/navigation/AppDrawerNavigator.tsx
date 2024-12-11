@@ -34,7 +34,7 @@ const CustomHeaderBackground = () => (
 const AppDrawerNavigator = () => {
   return (
     <Drawer.Navigator
-
+    
       initialRouteName="Home"
       drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
