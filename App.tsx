@@ -1,30 +1,27 @@
+import 'react-native-reanimated'; 
 import 'react-native-gesture-handler';
 import React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { enableScreens } from 'react-native-screens';
-import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigation from './src/navigation/AppNavigation';
+import { AuthProvider } from './src/context/AuthContext';
+import { ThemeProvider } from './src/context/ThemeContext'; 
 
-enableScreens();
-
-const App = () => {
+const App: React.FC = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      <NavigationContainer>
-        <AppNavigation />
-      </NavigationContainer>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <AppNavigation />
+        </ThemeProvider>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
-
 export default App;
+
+
+// ------------
 
 
 // import 'react-native-gesture-handler';
