@@ -1,12 +1,13 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
   DrawerItem,
+  DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import Home from '../screens/Home';
 import Presupuestos from '../screens/Presupuestos';
@@ -14,7 +15,7 @@ import AgregarGastoIngreso from '../screens/AgregarGastoIngreso';
 import InformacionGastoIngreso from '../screens/InformacionGastoIngreso';
 import Graficas from '../screens/Graficas';
 import Categorias from '../screens/Categorias';
-import {AuthContext} from '../context/AuthContext';
+import { AuthContext } from '../context/AuthContext';
 
 export type AppDrawerParamList = {
   Home: undefined;
@@ -27,16 +28,15 @@ export type AppDrawerParamList = {
 
 const Drawer = createDrawerNavigator<AppDrawerParamList>();
 
-const CustomHeaderBackground = () => (
+const CustomHeaderBackground: React.FC = () => (
   <View style={styles.headerBackground} />
 );
 
-const AppDrawerNavigator = () => {
+const AppDrawerNavigator: React.FC = () => {
   return (
     <Drawer.Navigator
-    
       initialRouteName="Home"
-      drawerContent={props => <CustomDrawerContent {...props} />}
+      drawerContent={(props: DrawerContentComponentProps) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
         headerTransparent: true,
@@ -47,22 +47,19 @@ const AppDrawerNavigator = () => {
           fontWeight: 'bold',
         },
         headerTintColor: '#EBEDD7',
-        drawerStyle: {width: 320, backgroundColor: '#284E3F'},
+        drawerStyle: { width: 320, backgroundColor: '#284E3F' },
         drawerActiveTintColor: '#e9ebd8',
         drawerInactiveTintColor: '#EBEDD7',
-        drawerLabelStyle: {marginLeft: -5, fontSize: 16},
-      }}>
+        drawerLabelStyle: { marginLeft: -5, fontSize: 16 },
+      }}
+    >
       <Drawer.Screen
         name="Home"
         component={Home}
         options={{
           drawerLabel: 'Inicio',
-          drawerIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="home-outline"
-              color={color}
-              size={size}
-            />
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home-outline" color={color} size={size} />
           ),
         }}
       />
@@ -71,12 +68,8 @@ const AppDrawerNavigator = () => {
         component={Presupuestos}
         options={{
           drawerLabel: 'Presupuestos',
-          drawerIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="currency-usd"
-              color={color}
-              size={size}
-            />
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="currency-usd" color={color} size={size} />
           ),
         }}
       />
@@ -85,12 +78,8 @@ const AppDrawerNavigator = () => {
         component={AgregarGastoIngreso}
         options={{
           drawerLabel: 'Agregar Gasto/Ingreso',
-          drawerIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="plus-circle-outline"
-              color={color}
-              size={size}
-            />
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="plus-circle-outline" color={color} size={size} />
           ),
         }}
       />
@@ -99,12 +88,8 @@ const AppDrawerNavigator = () => {
         component={InformacionGastoIngreso}
         options={{
           drawerLabel: 'Info Gasto/Ingreso',
-          drawerIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="information-outline"
-              color={color}
-              size={size}
-            />
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="information-outline" color={color} size={size} />
           ),
         }}
       />
@@ -113,12 +98,8 @@ const AppDrawerNavigator = () => {
         component={Graficas}
         options={{
           drawerLabel: 'Gráficas',
-          drawerIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="chart-line"
-              color={color}
-              size={size}
-            />
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="chart-line" color={color} size={size} />
           ),
         }}
       />
@@ -127,12 +108,8 @@ const AppDrawerNavigator = () => {
         component={Categorias}
         options={{
           drawerLabel: 'Categorías',
-          drawerIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="format-list-bulleted"
-              color={color}
-              size={size}
-            />
+          drawerIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="format-list-bulleted" color={color} size={size} />
           ),
         }}
       />
@@ -140,25 +117,23 @@ const AppDrawerNavigator = () => {
   );
 };
 
-const CustomDrawerContent = (props: any) => {
-  const {user, logout} = useContext(AuthContext);
+interface CustomDrawerContentProps extends DrawerContentComponentProps {}
+
+const CustomDrawerContent: React.FC<CustomDrawerContentProps> = (props) => {
+  const { user, logout } = useContext(AuthContext);
   const username = user?.correo.split('@')[0] || 'Usuario';
 
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.userInfoSection}>
-        <MaterialCommunityIcons
-          name="account-circle"
-          size={80}
-          color="#c6c7bd"
-        />
+        <MaterialCommunityIcons name="account-circle" size={80} color="#c6c7bd" />
         <Text style={styles.username}>Hola, {username}</Text>
       </View>
       <DrawerItemList {...props} />
       <DrawerItem
         label="Cerrar Sesión"
-        labelStyle={{color: '#9d9e95'}}
-        icon={({color, size}) => (
+        labelStyle={{ color: '#9d9e95' }}
+        icon={({ color, size }) => (
           <MaterialCommunityIcons name="logout" color="#9d9e95" size={size} />
         )}
         onPress={logout}
